@@ -127,11 +127,10 @@ function main(){
         current_artboard_name = [artboard name];
         log("\tTraversing artboard " + current_artboard_name);
 
-        // TODO: support artboards named artboard.png
-        // if(should_export(artboard)) {
-        //   log("Will try to export artboard " + [artboard name]);
-        //   export_layer(artboard, get_data_from_layer(artboard));
-        // }
+        // FIXME: don't export artboards named artboard.png inside a folder
+        if(should_export(artboard)) {
+          process_layer(artboard);
+        }
 
         var all_layers = [artboard layers];
         all_layers.each(function(layer){
