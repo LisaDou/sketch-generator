@@ -129,6 +129,7 @@ function main(){
         log("\tTraversing artboard " + current_artboard_name);
 
         // FIXME: don't export artboards named artboard.png inside a folder
+        // i.e: export doc-assets/page_1/foo.png instead of doc-assets/page_1/foo.png/foo.png
         if(should_export(artboard)) {
           process_layer(artboard);
         }
