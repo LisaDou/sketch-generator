@@ -77,7 +77,6 @@ function sanitize_filename(name){
 function export_layer(layer, options) {
   log("\t\t\tExporting " + options.name + ", with scale: " + options.scale);
 
-  // var filename = assets_folder + "/" + sanitize_filename(options.name);
   var filename = assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name) + "/" + sanitize_filename(options.name);
 
   // copy off-screen
@@ -90,12 +89,11 @@ function export_layer(layer, options) {
   var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
       slice = [MSSlice sliceWithRect:rect scale:options.scale];
 
-  // Maybe: add scale in filename
+  // TODO: add scale in filename?
   // filename += "-" + options.scale + "x";
   [doc saveArtboardOrSlice:slice toFile:(filename + "." + options.filetype)];
 
-  // remove it
-  // log("Removing copy");
+  // Remove copy
   [copy removeFromParent];
 
 }
@@ -120,8 +118,6 @@ function main(){
     log("-------------------------------------------------------------------------------------")
     log("Traversing page: " + current_page_name);
 
-    //[file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name)) withIntermediateDirectories:true attributes:nil error:nil];
-
     // ...then artboards...
     var artboards = [[doc currentPage] artboards];
 
@@ -131,15 +127,12 @@ function main(){
         current_artboard_name = [artboard name];
         log("\tTraversing artboard " + current_artboard_name);
 
-        // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
-
         // TODO: support artboards named artboard.png
         // if(should_export(artboard)) {
         //   log("Will try to export artboard " + [artboard name]);
         //   export_layer(artboard, get_data_from_layer(artboard));
         // }
 
-        // var all_layers = [[doc currentPage] layers];
         var all_layers = [artboard layers];
         all_layers.each(function(layer){
           process_layer(layer);
@@ -149,8 +142,6 @@ function main(){
     } else {
       log("\tNo artboards in page...");
       current_artboard_name = 'no_artboard';
-      // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
-
       var all_layers = [[doc currentPage] layers];
       all_layers.each(function(layer){
         process_layer(layer);
