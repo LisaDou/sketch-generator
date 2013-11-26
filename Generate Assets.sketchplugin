@@ -12,7 +12,8 @@ var document_path = [[doc fileURL] path].split([doc displayName])[0],
     assets_folder = document_path + "/" + document_name + "-assets",
     file_manager = [NSFileManager defaultManager],
     current_page_name,
-    current_artboard_name;
+    current_artboard_name,
+    total_assets = 0;
 
 Array.prototype.each = function(callback){
   var count = 0;
@@ -95,7 +96,7 @@ function export_layer(layer, options) {
 
   // Remove copy
   [copy removeFromParent];
-
+  total_assets++;
 }
 function is_group(layer) {
   return [layer isMemberOfClass:[MSLayerGroup class]];
@@ -152,8 +153,12 @@ function main(){
 
 
 // Store start page, so we can return to it after exporting
-var start_page = [doc currentPage];
+var start_time = new Date(),
+    start_page = [doc currentPage];
+
 // Let's go!
 main();
 // Restore start page
 [doc setCurrentPage:start_page];
+
+[doc showMessage: "Sketch Generator: " + total_assets + " assets exported in " + ((new Date() - start_time) / 1000) + " seconds"];
