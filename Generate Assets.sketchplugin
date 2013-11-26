@@ -155,5 +155,10 @@ function main(){
 
 }
 
+
+// Store start page, so we can return to it after exporting
+var start_page = [doc currentPage];
 // Let's go!
 main();
+// Restore start page
+[doc setCurrentPage:start_page];
