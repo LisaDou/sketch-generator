@@ -115,7 +115,7 @@ function main(){
     log("Traversing page: " + current_page_name);
     log("#####################################################################################")
 
-    [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name)) withIntermediateDirectories:true attributes:nil error:nil];
+    //[file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
     // ...then artboards...
     var artboards = [[doc currentPage] artboards];
@@ -126,7 +126,7 @@ function main(){
         current_artboard_name = [artboard name];
         log("Traversing artboard " + current_artboard_name);
 
-        [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
+        // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
         // TODO: support artboards named artboard.png
         // if(should_export(artboard)) {
@@ -144,7 +144,7 @@ function main(){
     } else {
       log("No artboards in document...");
       current_artboard_name = 'no_artboard';
-      [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
+      // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
       var all_layers = [[doc currentPage] layers];
       all_layers.each(function(layer){
