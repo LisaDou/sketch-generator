@@ -59,7 +59,7 @@ function get_data_from_layer(layer) {
   for (var i = 0; i < assets.length; i++) {
 
     var current_asset = assets[i],
-        filename = current_asset.replace(generator.regexp,''),
+        filename = current_asset.replace(generator.regexp,'').trim(),
         asset_metadata = {
           name: filename,
           filetype: current_asset.split(".")[1].substr(0,3),
