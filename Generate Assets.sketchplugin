@@ -55,21 +55,21 @@ function get_data_from_layer(layer) {
 
   for (var i = 0; i < assets.length; i++) {
     var current_asset = assets[i],
-        filename = current_asset.replace(generator.regexp,'').replace(' ','')
+        filename = current_asset.replace(generator.regexp,''),
+        asset_metadata = {
+          name: filename,
+          filetype: current_asset.split(".")[1].substr(0,3),
+          // TODO: Add support for '@2x' and 'HDPI' style scales
+          scale: current_asset.match(/(\d+)%/) ? current_asset.match(/(\d+)%/)[1]/100.0 : 1.0
+        }
 
-    var asset_metadata = {
-      name: sanitize_filename(filename),
-      filetype: current_asset.split(".")[1].substr(0,3),
-      // TODO: Add support for '@2x' and 'HDPI' style scales
-      scale: current_asset.match(/(\d+)%/) ? current_asset.match(/(\d+)%/)[1]/100.0 : 1.0
-    }
     assets_data.push(asset_metadata);
     // log('Asset scale: ' + asset_metadata.scale);
   }
   return assets_data;
 }
 function sanitize_filename(name){
-  return name.replace(/(\s+|\:|\/)/g ,"_").replace(/__/g,"_");
+  return name.replace(/(\s+|\:|\/)/g ,"_");//.replace(/_+/g,"_");
 }
 function export_layer(layer, options) {
   log("Exporting " + options.name + ", with scale: " + options.scale);
