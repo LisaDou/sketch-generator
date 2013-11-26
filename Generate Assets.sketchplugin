@@ -24,7 +24,7 @@ Array.prototype.each = function(callback){
 }
 
 function process_layer(layer) {
-  log('Processing layer "' + [layer name] + '"');
+  log('\t\tProcessing layer "' + [layer name] + '"');
 
   if(should_export(layer)) {
     // log("We should export it...");
@@ -44,16 +44,19 @@ function process_layer(layer) {
   }
 }
 function should_export(layer) {
-  log("should_export(" + [layer name] + ")")
+  // log("should_export(" + [layer name] + ")")
   return [layer name].match(generator.regexp);
 }
 function get_data_from_layer(layer) {
-  log('Getting data from ' + layer);
+
+  log('\t\t\tGetting data from ' + layer);
+
   var name = [layer name],
       assets = name.split(","),
       assets_data = [];
 
   for (var i = 0; i < assets.length; i++) {
+
     var current_asset = assets[i],
         filename = current_asset.replace(generator.regexp,''),
         asset_metadata = {
@@ -64,7 +67,7 @@ function get_data_from_layer(layer) {
         }
 
     assets_data.push(asset_metadata);
-    // log('Asset scale: ' + asset_metadata.scale);
+
   }
   return assets_data;
 }
@@ -72,7 +75,7 @@ function sanitize_filename(name){
   return name.replace(/(\s+|\:|\/)/g ,"_");//.replace(/_+/g,"_");
 }
 function export_layer(layer, options) {
-  log("Exporting " + options.name + ", with scale: " + options.scale);
+  log("\t\t\tExporting " + options.name + ", with scale: " + options.scale);
 
   // var filename = assets_folder + "/" + sanitize_filename(options.name);
   var filename = assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name) + "/" + sanitize_filename(options.name);
@@ -101,8 +104,11 @@ function is_group(layer) {
 }
 
 function main(){
-  log('##########################################################################################')
-  log('Sketch Generator running')
+  log("\r")
+  log("#####################################################################################")
+  log('# Sketch Generator running ##########################################################')
+  log("#####################################################################################")
+  log("\r")
 
   // Traverse pages...
   [doc pages].each(function(page){
@@ -111,9 +117,8 @@ function main(){
 
     current_page_name = [[doc currentPage] name];
 
-    log("#####################################################################################")
+    log("-------------------------------------------------------------------------------------")
     log("Traversing page: " + current_page_name);
-    log("#####################################################################################")
 
     //[file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
@@ -124,7 +129,7 @@ function main(){
       artboards.each(function(artboard){
 
         current_artboard_name = [artboard name];
-        log("Traversing artboard " + current_artboard_name);
+        log("\tTraversing artboard " + current_artboard_name);
 
         // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
@@ -142,7 +147,7 @@ function main(){
 
       });
     } else {
-      log("No artboards in document...");
+      log("\tNo artboards in page...");
       current_artboard_name = 'no_artboard';
       // [file_manager createDirectoryAtPath:(assets_folder + "/" + sanitize_filename(current_page_name) + "/" + sanitize_filename(current_artboard_name)) withIntermediateDirectories:true attributes:nil error:nil];
 
