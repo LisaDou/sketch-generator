@@ -32,7 +32,7 @@ Sketch Generator will let you export *all* your assets, no matter how complex yo
 - Run Generator by either choosing it from the Plugins menu, or pressing the keyboard shortcut (Ctrl + Alt + Command + G)
 - A new folder named "your-document-name-assets", containing all your assets grouped by Page and Artboard will be created in your document's current location.
 
-## Features & limitations
+## Features
 
 So far, it supports the following Photoshop Generator features:
 
