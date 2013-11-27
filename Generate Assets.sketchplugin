@@ -3,11 +3,10 @@
 // introduced by Adobe on Photoshop CC <http://blogs.adobe.com/photoshopdotcom/2013/09/introducing-adobe-generator-for-photoshop-cc.html>
 
 var generator = {
-  version: "0.1",
-  regexp: /\.png\d*\s*|\.jpg\d*\s*|\.gif\s*|\.svg\s*|\.eps\s*|\.pdf\s*|\.tif\s*|\d+%+|\d+\s*x\s*\d+/g
-}
-
-var document_path = [[doc fileURL] path].split([doc displayName])[0],
+      version: "0.1",
+      regexp: /\.png\d*\s*|\.jpg\d*\s*|\.gif\s*|\.svg\s*|\.eps\s*|\.pdf\s*|\.tif\s*|\d+%+|\d+\s*x\s*\d+/g
+    },
+    document_path = [[doc fileURL] path].split([doc displayName])[0],
     document_name = [doc displayName].replace(".sketch",""),
     assets_folder = document_path + "/" + document_name + "-assets",
     file_manager = [NSFileManager defaultManager],
@@ -101,6 +100,11 @@ function export_layer(layer, options) {
 function is_group(layer) {
   return [layer isMemberOfClass:[MSLayerGroup class]];
 }
+function cleanup(){
+  if ([file_manager fileExistsAtPath:assets_folder]) {
+    [file_manager removeItemAtPath:assets_folder error:nil];
+  }
+}
 
 function main(){
   log("\r")
@@ -109,54 +113,62 @@ function main(){
   log("#####################################################################################")
   log("\r")
 
-  // Cleanup
-  if ([file_manager fileExistsAtPath:assets_folder]) {
-    [file_manager removeItemAtPath:assets_folder error:nil];
-  }
-
-  // Traverse pages...
-  [doc pages].each(function(page){
-
-    [doc setCurrentPage:page];
-
+  if ([selection length] > 0) {
+    log("There's a selection, so export it instead of the whole document")
     current_page_name = [[doc currentPage] name];
+    if ([[doc currentPage] artboards] > 0) {
+      current_artboard_name = [[[doc currentPage] currentArtboard] name];
+    } else {
+      current_artboard_name = "no_artboard"
+    }
+    selection.each(function(layer){
+      process_layer(layer);
+    });
+  } else {
+    cleanup();
 
-    log("-------------------------------------------------------------------------------------")
-    log("Traversing page: " + current_page_name);
+    // Traverse pages...
+    [doc pages].each(function(page){
 
-    // ...then artboards...
-    var artboards = [[doc currentPage] artboards];
+      [doc setCurrentPage:page];
 
-    if([artboards length] >= 1) {
-      artboards.each(function(artboard){
+      current_page_name = [[doc currentPage] name];
 
-        current_artboard_name = [artboard name];
-        log("\tTraversing artboard " + current_artboard_name);
+      log("-------------------------------------------------------------------------------------")
+      log("Traversing page: " + current_page_name);
 
-        // FIXME: don't export artboards named artboard.png inside a folder
-        // i.e: export doc-assets/page_1/foo.png instead of doc-assets/page_1/foo.png/foo.png
-        if(should_export(artboard)) {
-          process_layer(artboard);
-        }
+      // ...then artboards...
+      var artboards = [[doc currentPage] artboards];
 
-        var all_layers = [artboard layers];
+      if([artboards length] >= 1) {
+        artboards.each(function(artboard){
+
+          current_artboard_name = [artboard name];
+          log("\tTraversing artboard " + current_artboard_name);
+
+          // FIXME: don't export artboards named artboard.png inside a folder
+          // i.e: export doc-assets/page_1/foo.png instead of doc-assets/page_1/foo.png/foo.png
+          if(should_export(artboard)) {
+            process_layer(artboard);
+          }
+
+          var all_layers = [artboard layers];
+          all_layers.each(function(layer){
+            process_layer(layer);
+          });
+
+        });
+      } else {
+        log("\tNo artboards in page...");
+        current_artboard_name = 'no_artboard';
+        var all_layers = [[doc currentPage] layers];
         all_layers.each(function(layer){
           process_layer(layer);
         });
-
-      });
-    } else {
-      log("\tNo artboards in page...");
-      current_artboard_name = 'no_artboard';
-      var all_layers = [[doc currentPage] layers];
-      all_layers.each(function(layer){
-        process_layer(layer);
-      });
-    }
-  });
-
+      }
+    });
+  }
 }
-
 
 // Store start page, so we can return to it after exporting
 var start_time = new Date(),
@@ -164,7 +176,9 @@ var start_time = new Date(),
 
 // Let's go!
 main();
+
 // Restore start page
 [doc setCurrentPage:start_page];
 
+// Some stats
 [doc showMessage: "Sketch Generator: " + total_assets + " assets exported in " + ((new Date() - start_time) / 1000) + " seconds"];

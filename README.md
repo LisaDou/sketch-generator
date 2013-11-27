@@ -34,11 +34,15 @@ Sketch Generator will let you export *all* your assets, no matter how complex yo
 
 ## Features & limitations
 
-So far, it supports the following features:
+So far, it supports the following Photoshop Generator features:
 
 - Multiple assets per layer / layer group
 - Export assets in PNG, GIF, PDF, SVG, EPS & TIFF format
 - Arbitrary & unlimited asset scaling in output (extreme example: I've used a 10000% scale to export a 31800 × 9800 pixels JPG. Takes some time, but it works :)
+
+In addition to that, the following are Sketch Generator-only features:
+
+- **Export selection only**: if you have a selection when running the command, only the selected assets will be generated. This is useful for quick exports in complex documents, where you don't want to export the whole shebang.
 
 ## Rules
 
@@ -81,4 +85,4 @@ For a more complete list of layer names this should support, check the tests in 
 - Export for all Android pixel densities
 - Add support for '@2x' and 'HDPI' style scales
 - Export only layer groups, in PNG format, without requiring layer renames (this is how Sketch Framer works currently, and I think it makes more sense than Adobe's choice)
-- Export selection only (for quick exports in complex documents)
+
