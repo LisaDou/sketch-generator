@@ -64,14 +64,17 @@ For a more complete list of layer names this should support, check the tests in 
 ### Not yet implemented, but feasible
 
 - Set asset size in pixels (using XXX px x YYY px or the shorthand XXXx? to scale proportionally)
-- Clean assets before exporting
+- Use fractional units (yeah, this is a #WTF, but it's there in Photoshop Generator)
+- Use '+' as filename separator
 - Export on save (this can be faked via a keyboard shortcut trick)
 
 ### Not implemented due to lack of technical support in Sketch
 
+- Export as WebP.
 - Set JPG export quality. Reason: there’s no API in Sketch yet.
 - Set PNG export format (PNG8, PNG24, PNG32). Reason: there’s no API in Sketch yet.
 - Realtime export on layer modification. Reason: Sketch lacks a realtime backend (Photoshop is using a node.js backend for Generator)
+- Export dimensions other than pixels. Reason: Sketch is a screen design tool. Why would you want to use inches?
 
 ### Upcoming features not included in Photoshop Generator
 
