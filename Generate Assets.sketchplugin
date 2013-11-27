@@ -113,6 +113,11 @@ function main(){
   log("#####################################################################################")
   log("\r")
 
+  // HACK: on a freshly started Sketch instance, 'selection' is null until you select an object
+  if (selection == null) {
+    selection = [[NSArray alloc] init]
+  }
+
   if ([selection length] > 0) {
     log("There's a selection, so export it instead of the whole document")
     current_page_name = [[doc currentPage] name];
