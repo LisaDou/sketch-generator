@@ -109,6 +109,11 @@ function main(){
   log("#####################################################################################")
   log("\r")
 
+  // Cleanup
+  if ([file_manager fileExistsAtPath:assets_folder]) {
+    [file_manager removeItemAtPath:assets_folder error:nil];
+  }
+
   // Traverse pages...
   [doc pages].each(function(page){
 
