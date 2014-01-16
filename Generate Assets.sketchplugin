@@ -89,6 +89,16 @@ function export_layer(layer, options) {
   var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
       slice = [MSSlice sliceWithRect:rect scale:options.scale];
 
+  // Look for '@bounds' layer
+  if ([copy layers]) {
+    log([copy name] + " has " + [[copy layers] length] + " sublayers")
+    for(var i=0; i < [[copy layers] length]; i++){
+      var sublayer = [copy layers][i];
+      if([sublayer name] == '@bounds'){
+        [sublayer setIsVisible:false];
+      }
+    }
+  }
   // TODO: add scale in filename?
   // filename += "-" + options.scale + "x";
   [doc saveArtboardOrSlice:slice toFile:(filename + "." + options.filetype)];
