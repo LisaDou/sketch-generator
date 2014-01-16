@@ -15,7 +15,7 @@ Sketch Generator will let you export *all* your assets, no matter how complex yo
 
 ## Installation
 
-- Just download this project, and double click **Generate Assets.sketchplugin** to have Sketch install it for you :)
+- Just [download the latest release](https://github.com/bomberstudios/sketch-generator/releases/tag/v0.2), and double click **Generate Assets.sketchplugin** to have Sketch install it for you :)
 
 ### If you're using both the beta and stable, and know your way around a command line
 
