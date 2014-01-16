@@ -1,4 +1,4 @@
-# Sketch Generator v0.1-not-yet-ready-for-production-use
+# Sketch Generator
 
 This command is a recreation for Sketch of the Photoshop Generator functionality introduced by Adobe on Photoshop CC (see [this blog post on Adobe](http://blogs.adobe.com/photoshopdotcom/2013/09/introducing-adobe-generator-for-photoshop-cc.html) for more information).
 
@@ -15,7 +15,7 @@ Sketch Generator will let you export *all* your assets, no matter how complex yo
 
 ## Installation
 
-- Just download this project, and move **Generate Assets.sketchplugin** to Sketch's plugins folder (to find it, open Sketch, select 'Custom Script...' from the 'Plugins' menu, click the gear icon and choose 'Open Plugins Folder')
+- Just download this project, and double click **Generate Assets.sketchplugin** to have Sketch install it for you :)
 
 ### If you're using both the beta and stable, and know your way around a command line
 
@@ -44,6 +44,7 @@ In addition to that, the following are Sketch Generator-only features:
 
 - Export assets in PDF, SVG, EPS & TIFF format
 - **Export selection only**: if you have a selection when running the command, only the selected assets will be generated. This is useful for quick exports in complex documents, where you don't want to export the whole shebang.
+- If you add a "@bounds" layer at the bottom of your layer group, it will be used for dimensions but won't get exported. This is usefull to use as a testing background for icons, where you want to keep the background transparent when exporting.
 
 ## Rules
 
