@@ -277,8 +277,7 @@ function export_layer(layer, options) {
   [frame setY:-100000];
 
   // export
-  var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]],
-      slice = [MSSlice sliceWithRect:rect scale:options.scale];
+  var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]]
 
   // Look for '@bounds' layer
   if ([copy layers]) {
@@ -286,10 +285,13 @@ function export_layer(layer, options) {
     for(var i=0; i < [[copy layers] length]; i++){
       var sublayer = [copy layers][i];
       if([sublayer name] == '@bounds'){
+        rect = [sublayer rectByAccountingForStyleSize:[[sublayer absoluteRect] rect]],
         [sublayer setIsVisible:false];
       }
     }
   }
+  var slice = [MSSlice sliceWithRect:rect scale:options.scale];
+
   // TODO: add scale in filename?
   // filename += "-" + options.scale + "x";
   if (in_sandbox()) {
