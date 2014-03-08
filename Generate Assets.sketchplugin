@@ -218,7 +218,6 @@ function process_layer(layer) {
   log('\t\tProcessing layer "' + [layer name] + '"');
 
   if(should_export(layer)) {
-    // log("We should export it...");
     var layer_metadata = get_data_from_layer(layer);
     for(var i=0; i < layer_metadata.length; i++) {
       export_layer(layer, layer_metadata[i]);
@@ -227,15 +226,20 @@ function process_layer(layer) {
 
   // Process sublayers
   if (is_group(layer)) {
-    // log("Also, it's a group");
-    var sublayers = [layer layers];
-    sublayers.each(function(sublayer){
-      process_layer(sublayer);
-    });
+    var sublayers = [layer layers]
+    for (var i = 0; i < [sublayers length]; i++) {
+      var layer = sublayers[i]
+      process_layer(layer);
+    }
   }
 }
 function should_export(layer) {
-  // log("should_export(" + [layer name] + ")")
+  log("\t\t\tShould we export " + layer + "?")
+  if ([layer name].match(generator.regexp)) {
+    log("\t\t\t\tYup")
+  } else {
+    log("\t\t\t\tNope")
+  }
   return [layer name].match(generator.regexp);
 }
 function get_data_from_layer(layer) {
@@ -307,12 +311,20 @@ function export_layer(layer, options) {
   total_assets++;
 }
 function is_group(layer) {
+  log("\t\t\tIs it a group?")
+  if ([layer isMemberOfClass:[MSLayerGroup class]]) {
+    log("\t\t\t\tYup")
+  } else {
+    log("\t\t\t\tNope")
+  }
   return [layer isMemberOfClass:[MSLayerGroup class]];
 }
 function cleanup(){
+  log("Cleanup")
   if ([file_manager fileExistsAtPath:assets_folder]) {
     [file_manager removeItemAtPath:assets_folder error:nil];
   }
+  log("Cleanup done")
 }
 
 function main(){
@@ -324,6 +336,7 @@ function main(){
 
   // HACK: on a freshly started Sketch instance, 'selection' is null until you select an object
   if (selection == null) {
+    log("Selection is not defined, yet")
     selection = [[NSArray alloc] init]
   }
 
@@ -335,30 +348,33 @@ function main(){
     } else {
       current_artboard_name = "no_artboard"
     }
-    selection.each(function(layer){
+    var selectionloop = [selection objectEnumerator]
+    while (layer = [selectionloop nextObject]) {
       process_layer(layer);
-    });
+    }
   } else {
+    log("No selection, export whole document")
     cleanup();
 
     // Traverse pages...
-    [doc pages].each(function(page){
+    var pageloop = [[doc pages] objectEnumerator]
+    while (page = [pageloop nextObject]) {
 
       [doc setCurrentPage:page];
 
       current_page_name = [[doc currentPage] name];
 
       log("-------------------------------------------------------------------------------------")
-      log("Traversing page: " + current_page_name);
+      log("Traversing page: " + page)
 
       // ...then artboards...
       var artboards = [[doc currentPage] artboards];
 
       if([artboards length] >= 1) {
-        artboards.each(function(artboard){
-
+        var artboardloop = [artboards objectEnumerator]
+        while (artboard = [artboardloop nextObject]) {
           current_artboard_name = [artboard name];
-          log("\tTraversing artboard " + current_artboard_name);
+          log("\tTraversing artboard: " + current_artboard_name);
 
           // FIXME: don't export artboards named artboard.png inside a folder
           // i.e: export doc-assets/page_1/foo.png instead of doc-assets/page_1/foo.png/foo.png
@@ -366,21 +382,22 @@ function main(){
             process_layer(artboard);
           }
 
-          var all_layers = [artboard layers];
-          all_layers.each(function(layer){
-            process_layer(layer);
-          });
-
-        });
+          var artboard_layers = [artboard layers]
+          log("\t\tWe have " + [artboard_layers count] + " layers in this artboard")
+          for(var i=0; i < [artboard_layers length]; i++){
+            var artboard_layer = artboard_layers[i]
+            process_layer(artboard_layer)
+          }
+        }
       } else {
         log("\tNo artboards in page...");
         current_artboard_name = 'no_artboard';
-        var all_layers = [[doc currentPage] layers];
-        all_layers.each(function(layer){
-          process_layer(layer);
-        });
+        var pagelayers = [page layers]
+        for (var i = 0; i < [pagelayers length]; i++) {
+          process_layer(pagelayers[i])
+        }
       }
-    });
+    }
   }
 }
 
