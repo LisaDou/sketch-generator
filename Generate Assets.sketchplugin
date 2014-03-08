@@ -346,7 +346,7 @@ function main(){
     if ([[doc currentPage] artboards] > 0) {
       current_artboard_name = [[[doc currentPage] currentArtboard] name];
     } else {
-      current_artboard_name = "no_artboard"
+      current_artboard_name = ""
     }
     var selectionloop = [selection objectEnumerator]
     while (layer = [selectionloop nextObject]) {
@@ -391,7 +391,7 @@ function main(){
         }
       } else {
         log("\tNo artboards in page...");
-        current_artboard_name = 'no_artboard';
+        current_artboard_name = '';
         var pagelayers = [page layers]
         for (var i = 0; i < [pagelayers length]; i++) {
           process_layer(pagelayers[i])
