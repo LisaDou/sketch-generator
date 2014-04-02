@@ -284,13 +284,15 @@ function export_layer(layer, options) {
   var rect = [copy rectByAccountingForStyleSize:[[copy absoluteRect] rect]]
 
   // Look for '@bounds' layer
-  if ([copy layers]) {
-    log([copy name] + " has " + [[copy layers] length] + " sublayers")
-    for(var i=0; i < [[copy layers] length]; i++){
-      var sublayer = [copy layers][i];
-      if([sublayer name] == '@bounds'){
-        rect = [sublayer rectByAccountingForStyleSize:[[sublayer absoluteRect] rect]],
-        [sublayer setIsVisible:false];
+  if ([copy class] != MSBitmapLayer) {
+    if ([copy layers]) {
+      log([copy name] + " has " + [[copy layers] length] + " sublayers")
+      for(var i=0; i < [[copy layers] length]; i++){
+        var sublayer = [copy layers][i];
+        if([sublayer name] == '@bounds'){
+          rect = [sublayer rectByAccountingForStyleSize:[[sublayer absoluteRect] rect]],
+          [sublayer setIsVisible:false];
+        }
       }
     }
   }
