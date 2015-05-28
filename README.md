@@ -1,5 +1,7 @@
 # Sketch Generator
 
+**PLEASE NOTE: development on this project has been frozen, since I consider that the new export tools in Sketch 3, combined with [sketchtool](http://bohemiancoding.com/sketch/tool/) make this plugin unnecessary.** Feel free to fork & modify, but please don't file issues since they won't really be fixed. I considered deleting the project, but since the code may still have a use for learning purposes I'll just leave it in a suspended animation state.
+
 This command is a recreation for Sketch of the Photoshop Generator functionality introduced by Adobe on Photoshop CC (see [this blog post on Adobe](http://blogs.adobe.com/photoshopdotcom/2013/09/introducing-adobe-generator-for-photoshop-cc.html) for more information).
 
 It is a work in progress: most features in Photoshop Generator are implemented, but some are not there yet due to either lack of time or current technical limitations in Sketch (see the **Pending Features** section below).
